@@ -2,19 +2,16 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.*;
+import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class FacadeTest {
 
     private static EntityManagerFactory emf;
@@ -32,8 +29,8 @@ public class FacadeTest {
 
     @BeforeAll
     public static void setUpClass() {
-       emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = Facade.getFacadeExample(emf);
+        emf = EMF_Creator.createEntityManagerFactoryForTest();
+        facade = Facade.getFacadeExample(emf);
     }
 
     @AfterAll
@@ -45,6 +42,7 @@ public class FacadeTest {
     //TODO -- Make sure to change the code below to use YOUR OWN entity class
     @BeforeEach
     public void setUp() {
+
         EntityManager em = emf.createEntityManager();
 
         person = new Person("test@test.dk","Karl","Larsen");
@@ -97,38 +95,42 @@ public class FacadeTest {
 
     @AfterEach
     public void tearDown() {
-//        Remove any data after each test was run
     }
 
 
     @Test
     public void getAllPersonsTest(){
         System.out.println("Get all persons test!");
-        assertEquals(2,facade.getAllPersons().size());
+        assertEquals(3,facade.getAllPersons().size());
+
     }
     @Test
     public void getPersonByPhoneTest(){
         System.out.println("Get person by phone test!");
         assertEquals(person.getId(),facade.getPersonByPhone("2314121").getId());
         assertEquals(person2.getId(),facade.getPersonByPhone("9314121").getId());
+
     }
     @Test
     public void getAllPersonsByZipTest(){
         System.out.println("Get all persons by zip test!");
         assertEquals(2,facade.getAllPersonsByZip(2800).size());
         assertEquals(1,facade.getAllPersonsByZip(2770).size());
+
     }
 
     @Test
     public void getNumberOfPersonsWithHobbyTest(){
         System.out.println("Get number of persons by hobby test!");
         assertEquals(1,facade.getNumberOfPersonsWithHobby(hobby2.getId()));
+
     }
 
     @Test
     public void getAllZipCodesTest(){
         System.out.println("get all zipCodes test");
         assertEquals(2,facade.getAllZipCodes().size());
+
     }
 
     @Test
@@ -145,6 +147,7 @@ public class FacadeTest {
         facade.createPerson(testPerson);
 
         assertEquals(4,facade.getAllPersons().size());
+
     }
 
     @Test
@@ -156,6 +159,7 @@ public class FacadeTest {
         facade.editPerson(personDTO);
 
         assertEquals("Edited name",facade.getPersonByPhone("2314121").getfName());
+
     }
 
 
