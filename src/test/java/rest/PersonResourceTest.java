@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 //Uncomment the line below, to temporarily disable this test
 @Disabled
-
 public class PersonResourceTest {
 
     private static final int SERVER_PORT = 7777;
@@ -65,7 +64,7 @@ public class PersonResourceTest {
     @Test
     public void testServerIsUp() {
         System.out.println("Testing is server UP");
-        given().when().get("/xxx").then().statusCode(200);
+        given().when().get("/person/all").then().statusCode(200);
     }
 
 
