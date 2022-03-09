@@ -56,7 +56,6 @@ public class Facade {
 //        return new RenameMeDTO(rm);
 //    }
 //
-//    //TODO Remove/Change this before use
 //    public long getRenameMeCount(){
 //        EntityManager em = getEntityManager();
 //        try{
