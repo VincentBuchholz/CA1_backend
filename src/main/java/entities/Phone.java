@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "phone")
@@ -13,6 +15,9 @@ public class Phone {
     private String number;
     @Column(name = "description")
     private String description;
+    @ManyToOne
+    @JoinColumn(name="person_id")
+    private Person person;
 
     public Phone() {
     }
@@ -45,4 +50,15 @@ public class Phone {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Person getPerson() {
+        return person;
+    }
+    public void addPerson(Person p) {
+        this.person = p;
+        if(!p.getPhones().contains(this)){
+            p.addPhone(this);
+        }
+    }
+
 }

@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "city_info")
@@ -15,6 +17,9 @@ public class CityInfo {
 
     @Column(name = "city")
     private String city;
+
+    @OneToMany(mappedBy = "cityInfo")
+    private Set<Address> adresses = new HashSet<>();
 
     public CityInfo() {
     }
@@ -47,4 +52,16 @@ public class CityInfo {
     public int getId() {
         return id;
     }
+
+    public Set<Address> getAdresses() {
+        return adresses;
+    }
+
+    public void addAddress(Address a) {
+        this.adresses.add(a);
+        if(a.getCityInfo() != this){
+            a.addCityInfo(this);
+        }
+    }
+
 }

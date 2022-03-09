@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "hobby")
@@ -13,6 +15,8 @@ public class Hobby {
     private String name;
     @Column(name = "description")
     private String description;
+    @ManyToMany(mappedBy = "hobbies")
+    private Set<Person> persons = new HashSet<>();
 
     public Hobby() {
     }
@@ -44,5 +48,16 @@ public class Hobby {
 
     public int getId() {
         return id;
+    }
+
+    public void addPerson(Person p) {
+        this.persons.add(p);
+        if(!p.getHobbies().contains(this)){
+            p.addHobby(this);
+        }
+    }
+
+    public Set<Person> getPersons() {
+        return persons;
     }
 }
