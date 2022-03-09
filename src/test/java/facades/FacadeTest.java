@@ -18,6 +18,12 @@ public class FacadeTest {
 
     private static EntityManagerFactory emf;
     private static Facade facade;
+    Person person;
+    Person person2;
+    Person person3;
+    Address address3;
+    Hobby hobby;
+    Hobby hobby2;
 
     public FacadeTest() {
     }
@@ -39,35 +45,48 @@ public class FacadeTest {
     public void setUp() {
         EntityManager em = emf.createEntityManager();
 
-        Person person = new Person("test@test.dk","Karl","Larsen");
-        Person person2 = new Person("test@test.dk","Hans","Larsen");
+        person = new Person("test@test.dk","Karl","Larsen");
+        person2 = new Person("test@test.dk","Hans","Larsen");
+        person3 = new Person("test@test.dk","Viggo","Hansen");
         Phone phone1 = new Phone("2314121","DK");
         Phone phone2 = new Phone("9314121","DK");
-        Hobby hobby = new Hobby("BasketBall","play ball");
+        hobby = new Hobby("BasketBall","play ball");
+        hobby2 = new Hobby("Tennis","play ball");
         Address address = new Address("Ulrikkenborg Alle","33");
         Address address2 = new Address("Ulrikkenborg Alle","230");
+        address3 = new Address("Vægterparken","193");
         CityInfo cityInfo = new CityInfo(2800,"Kgs. Lyngby");
+        CityInfo cityInfo2 = new CityInfo(2770,"Kastrup");
 
         person.addHobby(hobby);
+        person2.addHobby(hobby);
+        person3.addHobby(hobby2);
+
         person.addPhone(phone1);
+        person2.addPhone(phone2);
+
         person.addAddress(address);
-        person2.addAddress(address);
+        person2.addAddress(address2);
+        person3.addAddress(address3);
+
         address.addCityInfo(cityInfo);
         address2.addCityInfo(cityInfo);
-
-
-
+        address3.addCityInfo(cityInfo2);
 
         try{
             em.getTransaction().begin();
             em.persist(person);
             em.persist(person2);
+            em.persist(person3);
             em.persist(phone1);
             em.persist(phone2);
             em.persist(hobby);
+            em.persist(hobby2);
             em.persist(address);
             em.persist(address2);
+            em.persist(address3);
             em.persist(cityInfo);
+            em.persist(cityInfo2);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -80,11 +99,30 @@ public class FacadeTest {
     }
 
 
-    //Delete this test
     @Test
     public void getAllPersonsTest(){
         System.out.println("Get all persons test!");
         assertEquals(2,facade.getAllPersons().size());
     }
+    @Test
+    public void getPersonByPhoneTest(){
+        System.out.println("Get person by phone test!");
+        assertEquals(person.getId(),facade.getPersonByPhone("2314121").getId());
+        assertEquals(person2.getId(),facade.getPersonByPhone("9314121").getId());
+    }
+    @Test
+    public void getAllPersonsByZipTest(){
+        System.out.println("Get all persons by zip test!");
+        assertEquals(2,facade.getAllPersonsByZip(2800).size());
+        assertEquals(1,facade.getAllPersonsByZip(2770).size());
+    }
+
+    @Test
+    public void getNumberOfPersonsWithHobbyTest(){
+        System.out.println("Get number of persons by hobby test!");
+        assertEquals(1,facade.getNumberOfPersonsWithHobby(hobby2.getId()));
+    }
+
+
 
 }

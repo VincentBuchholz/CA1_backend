@@ -1,12 +1,19 @@
 package facades;
 
 import dtos.PersonDTO;
+import entities.Address;
+import entities.Hobby;
 import entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //import errorhandling.RenameMeNotFoundException;
 
@@ -77,6 +84,34 @@ public class Facade {
         List<Person> persons = query.getResultList();
         return PersonDTO.getDtos(persons);
     }
+
+    public PersonDTO getPersonByPhone(String phone) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<PersonDTO> query = em.createQuery("SELECT new dtos.PersonDTO (p) from Person p join Phone ph where ph.number = :phone and p.id=ph.person.id", PersonDTO.class);
+            query.setParameter("phone",phone);
+            query.setMaxResults(1);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<PersonDTO> getAllPersonsByZip(int zip) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<PersonDTO> query = em.createQuery("SELECT new dtos.PersonDTO(p) FROM Person p join Address a join CityInfo c WHERE c.zipCode=:zip and c.id=a.cityInfo.id and p.address.id=a.id", PersonDTO.class);
+        query.setParameter("zip",zip);
+        return query.getResultList();
+    }
+
+    public int getNumberOfPersonsWithHobby(int hobbyId) {
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Hobby> query = em.createQuery("select h FROM Hobby h WHERE h.id=:hobbyId",Hobby.class);
+        query.setParameter("hobbyId",hobbyId);
+        Hobby hobby=query.getSingleResult();
+        return hobby.getPersons().size();
+    }
+
 //
 //    public static void main(String[] args) {
 //        emf = EMF_Creator.createEntityManagerFactory();

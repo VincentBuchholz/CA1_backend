@@ -8,6 +8,7 @@ import facades.Facade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,9 +28,31 @@ public class PersonResource {
     @Path("/all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAllPersons() {
-        System.out.println("are we here?");
         List<PersonDTO> personDTOList = FACADE.getAllPersons();
         return Response.ok().entity(GSON.toJson(personDTOList)).build();
+    }
+
+    @GET
+    @Path("/phone/{phone}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonByPhone(@PathParam("phone") String phone) {
+        PersonDTO personDTO = FACADE.getPersonByPhone(phone);
+        return Response.ok().entity(GSON.toJson(personDTO)).build();
+    }
+    @GET
+    @Path("/zip/{zip}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllPersonsByZip(@PathParam("zip") int zip) {
+        List<PersonDTO> personDTOList = FACADE.getAllPersonsByZip(zip);
+        return Response.ok().entity(GSON.toJson(personDTOList)).build();
+    }
+    @GET
+    @Path("/hobby/{hobbyID}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getNumberOfPersonsWithHobby(@PathParam("hobbyID") int hobbyId) {
+        int amountOfPersons= FACADE.getNumberOfPersonsWithHobby(hobbyId);
+        return Response.ok().entity("{\"amount\":"+amountOfPersons+"}").build();
+
     }
 
 }
