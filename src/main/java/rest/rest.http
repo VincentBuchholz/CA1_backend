@@ -1,0 +1,40 @@
+POST http://localhost:8080/devops_starter_war_exploded/api/person
+Content-Type: application/json
+
+{
+  "fName": "Johannes",
+  "lName": "Petersen",
+  "email": "test@test.dk",
+  "hobbies": [
+    {
+      "id": 2
+    }
+  ],
+  "phones": [
+    {
+      "nr": "2371617",
+      "desc": "DKk"
+    }
+  ],
+  "address": {
+    "street": "Kastrup vej",
+    "info": "45",
+    "cityInfo": {
+      "id": 2
+    }
+  }
+}
+
+###
+GET http://localhost:8080/devops_starter_war_exploded/api/person/all
+
+###
+
+PUT http://localhost:8080/devops_starter_war_exploded/api/person/edit/4
+Content-Type: application/json
+
+{
+  "fName": "Johannes",
+  "lName": "Test",
+  "email": "test@test.dk"
+  }

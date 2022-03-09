@@ -95,5 +95,4 @@ public class PersonDTO {
         this.address = address;
     }
 
-
 }

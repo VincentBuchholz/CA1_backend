@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.PersonDTO;
 import entities.*;
 import utils.EMF_Creator;
 
@@ -24,6 +25,7 @@ public class FacadeTest {
     Address address3;
     Hobby hobby;
     Hobby hobby2;
+    CityInfo cityInfo;
 
     public FacadeTest() {
     }
@@ -55,7 +57,7 @@ public class FacadeTest {
         Address address = new Address("Ulrikkenborg Alle","33");
         Address address2 = new Address("Ulrikkenborg Alle","230");
         address3 = new Address("Vægterparken","193");
-        CityInfo cityInfo = new CityInfo(2800,"Kgs. Lyngby");
+        cityInfo = new CityInfo(2800,"Kgs. Lyngby");
         CityInfo cityInfo2 = new CityInfo(2770,"Kastrup");
 
         person.addHobby(hobby);
@@ -121,6 +123,39 @@ public class FacadeTest {
     public void getNumberOfPersonsWithHobbyTest(){
         System.out.println("Get number of persons by hobby test!");
         assertEquals(1,facade.getNumberOfPersonsWithHobby(hobby2.getId()));
+    }
+
+    @Test
+    public void getAllZipCodesTest(){
+        System.out.println("get all zipCodes test");
+        assertEquals(2,facade.getAllZipCodes().size());
+    }
+
+    @Test
+    public void createPersonTest(){
+        System.out.println("Create person test!");
+        Person person = new Person("Test@test.dk","test","test");
+        Address address = new Address("Ulrikkenborg plads","2nd door");
+        address.addCityInfo(cityInfo);
+        person.addAddress(address);
+        person.addHobby(hobby2);
+        Phone phone = new Phone("24341421","dkk");
+        person.addPhone(phone);
+        PersonDTO testPerson = new PersonDTO(person);
+        facade.createPerson(testPerson);
+
+        assertEquals(4,facade.getAllPersons().size());
+    }
+
+    @Test
+    public void editPersonTest(){
+        System.out.println("edit person test");
+        PersonDTO personDTO = new PersonDTO(person);
+        personDTO.setfName("Edited name");
+
+        facade.editPerson(personDTO);
+
+        assertEquals("Edited name",facade.getPersonByPhone("2314121").getfName());
     }
 
 

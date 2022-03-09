@@ -2,14 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import utils.EMF_Creator;
 import facades.Facade;
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -53,6 +51,34 @@ public class PersonResource {
         int amountOfPersons= FACADE.getNumberOfPersonsWithHobby(hobbyId);
         return Response.ok().entity("{\"amount\":"+amountOfPersons+"}").build();
 
+    }
+
+    @GET
+    @Path("/zip/all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllZipCodes() {
+        List<CityInfoDTO> cityInfoDTOs = FACADE.getAllZipCodes();
+        return Response.ok().entity(GSON.toJson(cityInfoDTOs)).build();
+    }
+
+    @POST
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response createPerson(String content) {
+        PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
+        PersonDTO newPdto = FACADE.createPerson(pdto);
+        return Response.ok().entity(GSON.toJson(newPdto)).build();
+    }
+
+    @PUT
+    @Path("/edit/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response update(@PathParam("id") int id, String content) {
+        PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
+        pdto.setId(id);
+        PersonDTO updated = FACADE.editPerson(pdto);
+        return Response.ok().entity(GSON.toJson(updated)).build();
     }
 
 }
