@@ -57,10 +57,10 @@ public class CityInfo {
         return adresses;
     }
 
-    public void addAddress(Address a) {
-        this.adresses.add(a);
-        if(a.getCityInfo() != this){
-            a.addCityInfo(this);
+    public void addAddress(Address address) {
+        this.adresses.add(address);
+        if(address.getCityInfo() != this){
+            address.addCityInfo(this);
         }
     }
 

@@ -60,20 +60,20 @@ public class Address {
         return this.persons;
     }
 
-    public void addPerson(Person p) {
-        this.persons.add(p);
-        if(p.getAddress() != this){
-            p.addAddress(this);
+    public void addPerson(Person person) {
+        this.persons.add(person);
+        if(person.getAddress() != this){
+            person.addAddress(this);
         }
     }
 
     public CityInfo getCityInfo() {
         return cityInfo;
     }
-    public void addCityInfo(CityInfo c) {
-        this.cityInfo=c;
-        if(!c.getAdresses().contains(this)){
-            c.addAddress(this);
+    public void addCityInfo(CityInfo cityInfo) {
+        this.cityInfo=cityInfo;
+        if(!cityInfo.getAdresses().contains(this)){
+            cityInfo.addAddress(this);
         }
     }
 }

@@ -76,30 +76,30 @@ public class Person {
         return hobbies;
     }
 
-    public void addHobby(Hobby h) {
-        this.hobbies.add(h);
-        if(!h.getPersons().contains(this)){
-           h.addPerson(this);
+    public void addHobby(Hobby hobby) {
+        this.hobbies.add(hobby);
+        if(!hobby.getPersons().contains(this)){
+           hobby.addPerson(this);
         }
     }
 
     public Set<Phone> getPhones() {
         return phones;
     }
-    public void addPhone(Phone p) {
-        this.phones.add(p);
-        if(p.getPerson()!=this){
-            p.addPerson(this);
+    public void addPhone(Phone phone) {
+        this.phones.add(phone);
+        if(phone.getPerson()!=this){
+            phone.addPerson(this);
         }
     }
 
     public Address getAddress() {
         return address;
     }
-    public void addAddress(Address a) {
-        this.address=a;
-        if(!a.getPersons().contains(this)){
-            a.addPerson(this);
+    public void addAddress(Address address) {
+        this.address=address;
+        if(!address.getPersons().contains(this)){
+            address.addPerson(this);
         }
     }
 }

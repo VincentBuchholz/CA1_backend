@@ -50,10 +50,10 @@ public class Hobby {
         return id;
     }
 
-    public void addPerson(Person p) {
-        this.persons.add(p);
-        if(!p.getHobbies().contains(this)){
-            p.addHobby(this);
+    public void addPerson(Person person) {
+        this.persons.add(person);
+        if(!person.getHobbies().contains(this)){
+            person.addHobby(this);
         }
     }
 

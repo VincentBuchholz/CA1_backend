@@ -54,10 +54,10 @@ public class Phone {
     public Person getPerson() {
         return person;
     }
-    public void addPerson(Person p) {
-        this.person = p;
-        if(!p.getPhones().contains(this)){
-            p.addPhone(this);
+    public void addPerson(Person person) {
+        this.person = person;
+        if(!person.getPhones().contains(this)){
+            person.addPhone(this);
         }
     }
 
