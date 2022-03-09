@@ -12,13 +12,12 @@ public class HobbyDTO {
     private int id;
     private String name;
     private String desc;
-    private Set<Person> persons = new HashSet<>();
 
     public HobbyDTO(Hobby hobby) {
         this.id = hobby.getId();
         this.name = hobby.getName();
         this.desc = hobby.getDescription();
-        this.persons = hobby.getPersons();
+
     }
 
     public static List<HobbyDTO> getDtos(List<Hobby> hobbyList){
@@ -51,11 +50,4 @@ public class HobbyDTO {
         this.desc = desc;
     }
 
-    public Set<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
-    }
 }

@@ -13,13 +13,11 @@ public class CityInfoDTO {
     private int id;
     private int zip;
     private String city;
-    private Set<Address> addresses = new HashSet<>();
 
     public CityInfoDTO(CityInfo cityInfo) {
        this.id = cityInfo.getId();
        this.zip = cityInfo.getZipCode();
        this.city = cityInfo.getCity();
-       this.addresses = cityInfo.getAdresses();
     }
 
     public static List<CityInfoDTO> getDtos(List<CityInfo> cityInfoList){
@@ -52,11 +50,4 @@ public class CityInfoDTO {
         this.city = city;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
 }

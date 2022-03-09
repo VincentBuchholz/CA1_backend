@@ -13,15 +13,13 @@ public class AddressDTO {
     private int id;
     private String street;
     private String info;
-    private Set<Person> persons = new HashSet<>();
-    private CityInfo cityInfo;
+    private CityInfoDTO cityInfo;
 
     public AddressDTO(Address address) {
         this.id = address.getId();
         this.street = address.getStreet();
         this.info = address.getAdditionalInfo();
-        this.persons = address.getPersons();
-        this.cityInfo = address.getCityInfo();
+        this.cityInfo = new CityInfoDTO(address.getCityInfo());
     }
 
     public static List<AddressDTO> getDtos(List<Address> addressList){
@@ -54,19 +52,11 @@ public class AddressDTO {
         this.info = info;
     }
 
-    public Set<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
-    }
-
-    public CityInfo getCityInfo() {
+    public CityInfoDTO getCityInfo() {
         return cityInfo;
     }
 
-    public void setCityInfo(CityInfo cityInfo) {
+    public void setCityInfo(CityInfoDTO cityInfo) {
         this.cityInfo = cityInfo;
     }
 }

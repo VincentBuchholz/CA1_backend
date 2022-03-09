@@ -10,13 +10,13 @@ public class PhoneDTO {
     private int id;
     private String nr;
     private String desc;
-    private Person person;
+    private int personId;
 
     public PhoneDTO(Phone phone) {
         this.id = phone.getId();
         this.nr = phone.getNumber();
         this.desc = phone.getDescription();
-        this.person = phone.getPerson();
+        this.personId = phone.getPerson().getId();
     }
 
     public static List<PhoneDTO> getDtos(List<Phone> phoneList){
@@ -49,12 +49,12 @@ public class PhoneDTO {
         this.desc = desc;
     }
 
-    public Person getPerson() {
-        return person;
+    public int getPersonId() {
+        return personId;
     }
 
-    public void setPerson(Person person) {
-        this.person = person;
+    public void setPerson(int id) {
+        this.personId = id;
     }
 }
 

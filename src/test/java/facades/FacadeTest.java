@@ -72,7 +72,6 @@ public class FacadeTest {
         } finally {
             em.close();
         }
-
     }
 
     @AfterEach
@@ -83,8 +82,9 @@ public class FacadeTest {
 
     //Delete this test
     @Test
-    public void databaseInsertTest(){
-        System.out.println("testing");
+    public void getAllPersonsTest(){
+        System.out.println("Get all persons test!");
+        assertEquals(2,facade.getAllPersons().size());
     }
 
 }

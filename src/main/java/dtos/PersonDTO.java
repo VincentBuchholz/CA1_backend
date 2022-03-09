@@ -15,18 +15,22 @@ public class PersonDTO {
     private String fName;
     private String lName;
     private String email;
-    private Set<Hobby> hobbies = new HashSet<>();
-    private Set<Phone> phones = new HashSet<>();
-    private Address address;
+    private Set<HobbyDTO> hobbies = new HashSet<>();
+    private Set<PhoneDTO> phones = new HashSet<>();
+    private AddressDTO address;
 
     public PersonDTO(Person person) {
         this.id = person.getId();
         this.fName = person.getFirstName();
         this.lName = person.getLastName();
         this.email = person.getEmail();
-        this.hobbies = person.getHobbies();
-        this.phones = person.getPhones();
-        this.address = person.getAddress();
+        for (Hobby hobby : person.getHobbies()) {
+            this.hobbies.add(new HobbyDTO(hobby));
+        }
+        for (Phone phone: person.getPhones()) {
+            this.phones.add(new PhoneDTO(phone));
+        }
+         this.address = new AddressDTO(person.getAddress());
     }
 
     public static List<PersonDTO> getDtos(List<Person> personList){
@@ -67,27 +71,29 @@ public class PersonDTO {
         this.email = email;
     }
 
-    public Set<Hobby> getHobbies() {
+    public Set<HobbyDTO> getHobbiesDTOs() {
         return hobbies;
     }
 
-    public void setHobbies(Set<Hobby> hobbies) {
-        this.hobbies = hobbies;
+    public void setHobbies(Set<HobbyDTO> hobbyDTOs) {
+        this.hobbies = hobbyDTOs;
     }
 
-    public Set<Phone> getPhones() {
+    public Set<PhoneDTO> getPhones() {
         return phones;
     }
 
-    public void setPhones(Set<Phone> phones) {
+    public void setPhones(Set<PhoneDTO> phones) {
         this.phones = phones;
     }
 
-    public Address getAddress() {
+    public AddressDTO getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressDTO address) {
         this.address = address;
     }
+
+
 }
