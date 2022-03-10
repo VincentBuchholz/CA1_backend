@@ -10,11 +10,11 @@ import javax.ws.rs.ext.Provider;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 @Provider
-public class PersonNotFoundMapper implements ExceptionMapper<PersonNotFoundException> {
+public class NotFoundMapper implements ExceptionMapper<NotFoundException> {
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     @Override
-    public Response toResponse(PersonNotFoundException ex) {
-        Logger.getLogger(PersonNotFoundException.class.getName())
+    public Response toResponse(NotFoundException ex) {
+        Logger.getLogger(NotFoundException.class.getName())
                 .log(Level.SEVERE, null, ex);
         ExceptionDTO err = new ExceptionDTO(404,ex.getMessage());
         return Response

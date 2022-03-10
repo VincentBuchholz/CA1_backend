@@ -4,7 +4,7 @@ import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.*;
 import errorhandling.MissingInputException;
-import errorhandling.PersonNotFoundException;
+import errorhandling.NotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -108,14 +108,14 @@ public class FacadeTest {
 
     }
     @Test
-    public void getPersonByPhoneTest() throws PersonNotFoundException {
+    public void getPersonByPhoneTest() throws NotFoundException {
         System.out.println("Get person by phone test!");
         assertEquals(person.getId(),facade.getPersonByPhone("2314121").getId());
         assertEquals(person2.getId(),facade.getPersonByPhone("9314121").getId());
 
     }
     @Test
-    public void getAllPersonsByZipTest(){
+    public void getAllPersonsByZipTest() throws NotFoundException{
         System.out.println("Get all persons by zip test!");
         assertEquals(2,facade.getAllPersonsByZip(2800).size());
         assertEquals(1,facade.getAllPersonsByZip(2770).size());
@@ -123,7 +123,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void getNumberOfPersonsWithHobbyTest(){
+    public void getNumberOfPersonsWithHobbyTest() throws NotFoundException {
         System.out.println("Get number of persons by hobby test!");
         assertEquals(1,facade.getNumberOfPersonsWithHobby(hobby2.getId()));
 
@@ -154,7 +154,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void editPersonTest() throws PersonNotFoundException{
+    public void editPersonTest() throws NotFoundException {
         System.out.println("edit person test");
         PersonDTO personDTO = new PersonDTO(person);
         personDTO.setfName("Edited name");
@@ -166,7 +166,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void editPersonAddressTest(){
+    public void editPersonAddressTest() throws NotFoundException {
         System.out.println("edit person address test");
         person.addAddress(address3);
         PersonDTO personDTO = new PersonDTO(person);
