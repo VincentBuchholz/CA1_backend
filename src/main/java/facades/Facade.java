@@ -5,6 +5,8 @@ import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.*;
+import errorhandling.MissingInputException;
+import errorhandling.PersonNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -88,13 +90,19 @@ public class Facade {
         }
     }
 
-    public PersonDTO getPersonByPhone(String phone) {
+    public PersonDTO getPersonByPhone(String phone) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<PersonDTO> query = em.createQuery("SELECT new dtos.PersonDTO (p) from Person p join Phone ph where ph.number = :phone and p.id=ph.person.id", PersonDTO.class);
             query.setParameter("phone",phone);
             query.setMaxResults(1);
-            return query.getSingleResult();
+            PersonDTO personDTO;
+            try {
+                personDTO = query.getSingleResult();
+            } catch (Exception e){
+            throw new PersonNotFoundException("Person with provided phone number not found");
+            }
+        return personDTO;
         } finally {
             em.close();
         }
@@ -133,11 +141,18 @@ public class Facade {
         }
     }
 
-    public PersonDTO createPerson(PersonDTO personDTO){
+    public PersonDTO createPerson(PersonDTO personDTO)throws MissingInputException {
+        if(personDTO.getEmail() == null || personDTO.getfName() == null || personDTO.getlName() == null){
+            throw new MissingInputException("Missing person values");
+        }
         Person person = new Person(personDTO.getEmail(),personDTO.getfName(),personDTO.getlName());
 
+        if(personDTO.getAddress().getStreet() == null || personDTO.getAddress().getInfo() == null){
+            throw new MissingInputException("Missing address values");
+        }
         Address address = new Address(personDTO.getAddress().getStreet(),personDTO.getAddress().getInfo());
         person.addAddress(address);
+
 
         EntityManager em = getEntityManager();
         try {
@@ -148,6 +163,9 @@ public class Facade {
             address.addCityInfo(em.find(CityInfo.class,personDTO.getAddress().getCityInfo().getId()));
             for (PhoneDTO phoneDTO : personDTO.getPhones()) {
                 Phone phone = new Phone(phoneDTO.getNr(),phoneDTO.getDesc());
+                if(phone.getNumber() == null || phone.getDescription() == null){
+                    throw new MissingInputException("Missing phone values");
+                }
                 person.addPhone(phone);
                 em.persist(phone);
             }
@@ -160,10 +178,14 @@ public class Facade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO editPerson(PersonDTO personDTO) {
+    public PersonDTO editPerson(PersonDTO personDTO) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,personDTO.getId());
+            System.out.println(person);
+            if(person == null){
+                throw new PersonNotFoundException("Person with provided id not found");
+            }
             if(personDTO.getfName() != null) {
                 person.setFirstName(personDTO.getfName());
             }

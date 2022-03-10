@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
+import errorhandling.MissingInputException;
+import errorhandling.PersonNotFoundException;
 import utils.EMF_Creator;
 import facades.Facade;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +35,7 @@ public class PersonResource {
     @GET
     @Path("/phone/{phone}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonByPhone(@PathParam("phone") String phone) {
+    public Response getPersonByPhone(@PathParam("phone") String phone) throws PersonNotFoundException {
         PersonDTO personDTO = FACADE.getPersonByPhone(phone);
         return Response.ok().entity(GSON.toJson(personDTO)).build();
     }
@@ -64,7 +66,7 @@ public class PersonResource {
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createPerson(String content) {
+    public Response createPerson(String content) throws MissingInputException {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         PersonDTO newPdto = FACADE.createPerson(pdto);
         return Response.ok().entity(GSON.toJson(newPdto)).build();
@@ -74,7 +76,7 @@ public class PersonResource {
     @Path("/edit/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") int id, String content) {
+    public Response update(@PathParam("id") int id, String content) throws PersonNotFoundException {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         pdto.setId(id);
         PersonDTO updated = FACADE.editPerson(pdto);

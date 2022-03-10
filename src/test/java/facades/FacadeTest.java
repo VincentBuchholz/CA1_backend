@@ -2,6 +2,8 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.*;
+import errorhandling.MissingInputException;
+import errorhandling.PersonNotFoundException;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 
@@ -105,7 +107,7 @@ public class FacadeTest {
 
     }
     @Test
-    public void getPersonByPhoneTest(){
+    public void getPersonByPhoneTest() throws PersonNotFoundException {
         System.out.println("Get person by phone test!");
         assertEquals(person.getId(),facade.getPersonByPhone("2314121").getId());
         assertEquals(person2.getId(),facade.getPersonByPhone("9314121").getId());
@@ -134,7 +136,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void createPersonTest(){
+    public void createPersonTest() throws MissingInputException {
         System.out.println("Create person test!");
         Person person = new Person("Test@test.dk","test","test");
         Address address = new Address("Ulrikkenborg plads","2nd door");
@@ -151,7 +153,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void editPersonTest(){
+    public void editPersonTest() throws PersonNotFoundException{
         System.out.println("edit person test");
         PersonDTO personDTO = new PersonDTO(person);
         personDTO.setfName("Edited name");

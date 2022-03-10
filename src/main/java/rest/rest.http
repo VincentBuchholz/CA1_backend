@@ -2,7 +2,7 @@ POST http://localhost:8080/devops_starter_war_exploded/api/person
 Content-Type: application/json
 
 {
-  "fName": "Johannes",
+  "fName": "johan",
   "lName": "Petersen",
   "email": "test@test.dk",
   "hobbies": [
@@ -30,7 +30,7 @@ GET http://localhost:8080/devops_starter_war_exploded/api/person/all
 
 ###
 
-PUT http://localhost:8080/devops_starter_war_exploded/api/person/edit/4
+PUT http://localhost:8080/devops_starter_war_exploded/api/person/edit/10
 Content-Type: application/json
 
 {
