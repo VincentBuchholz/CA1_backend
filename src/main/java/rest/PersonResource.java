@@ -101,7 +101,7 @@ public class PersonResource {
     @Path("/addphone/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addNewPhoneToPerson(@PathParam("id") int id,String content) {
+    public Response addNewPhoneToPerson(@PathParam("id") int id,String content) throws NotFoundException {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         pdto.setId(id);
         PersonDTO updated=null;

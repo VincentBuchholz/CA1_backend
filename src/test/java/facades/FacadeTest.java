@@ -176,7 +176,7 @@ public class FacadeTest {
     }
 
     @Test
-    public void addNewPhoneToPersonTest(){
+    public void addNewPhoneToPersonTest() throws NotFoundException{
         System.out.println("add phone to person test");
         person.addPhone(phonetest);
         facade.addNewPhoneToPerson(person.getId(), new PhoneDTO(phonetest));
