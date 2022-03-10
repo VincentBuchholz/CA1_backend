@@ -1,7 +1,7 @@
 package rest;
 
 import errorhandling.MissingInputMapper;
-import errorhandling.PersonNotFoundMapper;
+import errorhandling.NotFoundMapper;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -26,7 +26,7 @@ public class ApplicationConfig extends Application {
         resources.add(errorhandling.GenericExceptionMapper.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
         resources.add(PersonResource.class);
-        resources.add(PersonNotFoundMapper.class);
+        resources.add(NotFoundMapper.class);
         resources.add(MissingInputMapper.class);
     }
     

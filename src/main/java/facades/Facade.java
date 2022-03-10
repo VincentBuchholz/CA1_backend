@@ -3,10 +3,9 @@ package facades;
 import dtos.*;
 import entities.*;
 import errorhandling.MissingInputException;
-import errorhandling.PersonNotFoundException;
+import errorhandling.NotFoundException;
 
 import javax.persistence.*;
-import java.lang.reflect.Type;
 import java.util.*;
 
 //import errorhandling.RenameMeNotFoundException;
@@ -54,7 +53,7 @@ public class Facade {
         }
     }
 
-    public PersonDTO getPersonByPhone(String phone) throws PersonNotFoundException {
+    public PersonDTO getPersonByPhone(String phone) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<PersonDTO> query = em.createQuery("SELECT new dtos.PersonDTO (p) from Person p join Phone ph where ph.number = :phone and p.id=ph.person.id", PersonDTO.class);
@@ -64,7 +63,7 @@ public class Facade {
             try {
                 personDTO = query.getSingleResult();
             } catch (Exception e){
-            throw new PersonNotFoundException("Person with provided phone number not found");
+            throw new NotFoundException("Person with provided phone number not found");
             }
         return personDTO;
         } finally {
@@ -72,24 +71,32 @@ public class Facade {
         }
     }
 
-    public List<PersonDTO> getAllPersonsByZip(int zip) {
+    public List<PersonDTO> getAllPersonsByZip(int zip) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<PersonDTO> query = em.createQuery("SELECT new dtos.PersonDTO(p) FROM Person p join Address a join CityInfo c WHERE c.zipCode=:zip and c.id=a.cityInfo.id and p.address.id=a.id", PersonDTO.class);
             query.setParameter("zip", zip);
-            return query.getResultList();
+            List<PersonDTO> personDTOs = query.getResultList();
+                if(personDTOs.size()==0) {
+                    throw new NotFoundException("Provided Zipcode not found");
+                }
+                return personDTOs;
         }finally {
             em.close();
         }
     }
 
-    public int getNumberOfPersonsWithHobby(int hobbyId) {
+    public int getNumberOfPersonsWithHobby(int hobbyId) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Hobby> query = em.createQuery("select h FROM Hobby h WHERE h.id=:hobbyId", Hobby.class);
             query.setParameter("hobbyId", hobbyId);
+            try{
             Hobby hobby = query.getSingleResult();
             return hobby.getPersons().size();
+        } catch (Exception e){
+            throw new NotFoundException("Hobby with provieded id not found");
+        }
         } finally {
             em.close();
         }
@@ -148,13 +155,13 @@ public class Facade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO editPerson(PersonDTO personDTO) throws PersonNotFoundException {
+    public PersonDTO editPerson(PersonDTO personDTO) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,personDTO.getId());
             System.out.println(person);
             if(person == null){
-                throw new PersonNotFoundException("Person with provided id not found");
+                throw new NotFoundException("Person with provided id not found");
             }
             if(personDTO.getfName() != null) {
                 person.setFirstName(personDTO.getfName());
@@ -173,12 +180,12 @@ public class Facade {
             em.close();
         }
     }
-    public PersonDTO getPersonById(int id){
+    public PersonDTO getPersonById(int id) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             Person person = em.find(Person.class,id);
             if (person == null) {
-                System.out.println("No person with provided id found");
+                throw new NotFoundException("Person with provied id not found");
             }
             return new PersonDTO(person);
         }finally {

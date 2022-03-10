@@ -2,13 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.Phone;
 import errorhandling.MissingInputException;
-import errorhandling.PersonNotFoundException;
+import errorhandling.NotFoundException;
 import utils.EMF_Creator;
 import facades.Facade;
 import javax.persistence.EntityManagerFactory;
@@ -38,21 +37,21 @@ public class PersonResource {
     @GET
     @Path("/phone/{phone}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getPersonByPhone(@PathParam("phone") String phone) throws PersonNotFoundException {
+    public Response getPersonByPhone(@PathParam("phone") String phone) throws NotFoundException {
         PersonDTO personDTO = FACADE.getPersonByPhone(phone);
         return Response.ok().entity(GSON.toJson(personDTO)).build();
     }
     @GET
     @Path("/zip/{zip}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAllPersonsByZip(@PathParam("zip") int zip) {
+    public Response getAllPersonsByZip(@PathParam("zip") int zip) throws NotFoundException {
         List<PersonDTO> personDTOList = FACADE.getAllPersonsByZip(zip);
         return Response.ok().entity(GSON.toJson(personDTOList)).build();
     }
     @GET
     @Path("/hobby/{hobbyID}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getNumberOfPersonsWithHobby(@PathParam("hobbyID") int hobbyId) {
+    public Response getNumberOfPersonsWithHobby(@PathParam("hobbyID") int hobbyId) throws NotFoundException {
         int amountOfPersons= FACADE.getNumberOfPersonsWithHobby(hobbyId);
         return Response.ok().entity("{\"amount\":"+amountOfPersons+"}").build();
 
@@ -79,7 +78,7 @@ public class PersonResource {
     @Path("/edit/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") int id, String content) throws PersonNotFoundException {
+    public Response update(@PathParam("id") int id, String content) throws NotFoundException {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         pdto.setId(id);
         PersonDTO updated = FACADE.editPerson(pdto);
@@ -90,7 +89,7 @@ public class PersonResource {
     @Path("/editaddress/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response updateAddress(@PathParam("id") int id, String content) throws PersonNotFoundException {
+    public Response updateAddress(@PathParam("id") int id, String content) throws NotFoundException {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         pdto.setId(id);
 
