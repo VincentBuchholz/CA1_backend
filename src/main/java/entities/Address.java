@@ -67,6 +67,9 @@ public class Address {
             person.addAddress(this);
         }
     }
+    public void removePerson(Person person) {
+        this.persons.remove(person);
+    }
 
     public CityInfo getCityInfo() {
         return cityInfo;
@@ -77,4 +80,5 @@ public class Address {
             cityInfo.addAddress(this);
         }
     }
+
 }

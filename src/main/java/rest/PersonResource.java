@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import errorhandling.MissingInputException;
@@ -80,6 +81,18 @@ public class PersonResource {
         PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
         pdto.setId(id);
         PersonDTO updated = FACADE.editPerson(pdto);
+        return Response.ok().entity(GSON.toJson(updated)).build();
+    }
+
+    @PUT
+    @Path("/editaddress/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response updateAddress(@PathParam("id") int id, String content) throws PersonNotFoundException {
+        PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
+        pdto.setId(id);
+
+        PersonDTO updated = FACADE.editPersonAddress(id, pdto.getAddress());
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
 

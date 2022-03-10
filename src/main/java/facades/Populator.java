@@ -40,11 +40,10 @@ public class Populator {
         person2.addPhone(phone2);
 
         person.addAddress(address);
-        person2.addAddress(address2);
+        person2.addAddress(address);
         person3.addAddress(address3);
 
         address.addCityInfo(cityInfo);
-        address2.addCityInfo(cityInfo);
         address3.addCityInfo(cityInfo2);
 
         try{
@@ -57,7 +56,6 @@ public class Populator {
             em.persist(hobby);
             em.persist(hobby2);
             em.persist(address);
-            em.persist(address2);
             em.persist(address3);
             em.persist(cityInfo);
             em.persist(cityInfo2);

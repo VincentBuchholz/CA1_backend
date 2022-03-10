@@ -1,17 +1,11 @@
 package facades;
 
-import dtos.CityInfoDTO;
-import dtos.HobbyDTO;
-import dtos.PersonDTO;
-import dtos.PhoneDTO;
+import dtos.*;
 import entities.*;
 import errorhandling.MissingInputException;
 import errorhandling.PersonNotFoundException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -203,6 +197,78 @@ public class Facade {
             em.close();
         }
     }
+    public PersonDTO getPersonById(int id){
+        EntityManager em = emf.createEntityManager();
+        try {
+            Person person = em.find(Person.class,id);
+            if (person == null) {
+                System.out.println("No person with provided id found");
+            }
+            return new PersonDTO(person);
+        }finally {
+            em.close();
+        }
+    }
+
+    public PersonDTO editPersonAddress(int userId, AddressDTO addressDTO) {
+        EntityManager em = emf.createEntityManager();
+        try{
+            Person person = em.find(Person.class,userId);
+            Address oldAddress = em.find(Address.class,person.getAddress().getId());
+            Address newAddress = new Address(addressDTO.getStreet(), addressDTO.getInfo());
+            newAddress.addCityInfo(em.find(CityInfo.class,addressDTO.getCityInfo().getId()));
+            newAddress = checkIfAddressExists(newAddress);
+            if(newAddress.getId()>0){
+                newAddress=em.find(Address.class,newAddress.getId());
+            }else{
+                newAddress.addCityInfo(em.find(CityInfo.class,addressDTO.getCityInfo().getId()));
+            }
+            person.addAddress(newAddress);
+            em.getTransaction().begin();
+            em.persist(newAddress);
+            em.merge(person);
+            em.getTransaction().commit();
+
+            oldAddress.removePerson(person);
+            if(oldAddress.getPersons().size()<1){
+                deleteAddress(oldAddress.getId());
+            }
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
+    }
+    public Address checkIfAddressExists(Address address){
+        EntityManager em = emf.createEntityManager();
+        try{
+            TypedQuery<Address> query = em.createQuery("SELECT a from Address a WHERE a.street=:street and a.additionalInfo=:info and a.cityInfo.id =:city",Address.class);
+            query.setParameter("street",address.getStreet());
+            query.setParameter("info",address.getAdditionalInfo());
+            query.setParameter("city",address.getCityInfo().getId());
+            try{
+                return query.getSingleResult();
+            }catch (NoResultException e){
+                e.printStackTrace();
+                return address;
+            }
+        }finally {
+            em.close();
+        }
+    }
+    public void deleteAddress(int id){
+        EntityManager em = emf.createEntityManager();
+        try {
+            Address a = em.find(Address.class, id);
+            System.out.println(a.getStreet());
+            em.getTransaction().begin();
+            em.remove(a);
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+
+    }
+
 
 //
 //    public static void main(String[] args) {

@@ -38,3 +38,18 @@ Content-Type: application/json
   "lName": "Test",
   "email": "test@test.dk"
   }
+
+###
+
+PUT http://localhost:8080/ca1_war_exploded/api/person/editaddress/3
+Content-Type: application/json
+
+{
+  "address": {
+    "street": "kaster vej",
+    "info": "235",
+    "cityInfo": {
+      "id": 1
+    }
+  }
+}

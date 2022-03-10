@@ -1,5 +1,6 @@
 package facades;
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
 import entities.*;
 import errorhandling.MissingInputException;
@@ -161,6 +162,19 @@ public class FacadeTest {
         facade.editPerson(personDTO);
 
         assertEquals("Edited name",facade.getPersonByPhone("2314121").getfName());
+
+    }
+
+    @Test
+    public void editPersonAddressTest(){
+        System.out.println("edit person address test");
+        person.addAddress(address3);
+        System.out.println(address3.getStreet());
+        PersonDTO personDTO = new PersonDTO(person);
+
+       // facade.editPersonAddress(person.getId());
+
+       // assertEquals("Vægterparken",facade.getPersonById(person.getId()).getAddress().getStreet());
 
     }
 
