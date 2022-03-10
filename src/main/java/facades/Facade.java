@@ -249,6 +249,22 @@ public class Facade {
 
     }
 
+    public PersonDTO addNewPhoneToPerson(int userId, PhoneDTO phoneDTO) {
+        Phone phone = new Phone(phoneDTO.getNr(), phoneDTO.getDesc());
+        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class,userId);
+        person.addPhone(phone);
+        try {
+            em.getTransaction().begin();
+            em.persist(phone);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
+
+    }
+
 
 //
 //    public static void main(String[] args) {

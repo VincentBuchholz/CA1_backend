@@ -53,3 +53,15 @@ Content-Type: application/json
     }
   }
 }
+###
+POST http://localhost:8080/ca1_war_exploded/api/person/addphone/1
+Content-Type: application/json
+
+{
+"phones": [
+{
+"nr": "7364646",
+"desc": "DKk"
+}
+]
+}

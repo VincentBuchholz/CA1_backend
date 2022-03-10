@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
+import entities.Phone;
 import errorhandling.MissingInputException;
 import errorhandling.PersonNotFoundException;
 import utils.EMF_Creator;
@@ -93,6 +95,20 @@ public class PersonResource {
         pdto.setId(id);
 
         PersonDTO updated = FACADE.editPersonAddress(id, pdto.getAddress());
+        return Response.ok().entity(GSON.toJson(updated)).build();
+    }
+
+    @POST
+    @Path("/addphone/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response addNewPhoneToPerson(@PathParam("id") int id,String content) {
+        PersonDTO pdto = GSON.fromJson(content, PersonDTO.class);
+        pdto.setId(id);
+        PersonDTO updated=null;
+        for (PhoneDTO phoneDTO: pdto.getPhones()) {
+            updated = FACADE.addNewPhoneToPerson(id, phoneDTO);
+        }
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
 

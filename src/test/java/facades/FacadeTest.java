@@ -2,6 +2,7 @@ package facades;
 
 import dtos.AddressDTO;
 import dtos.PersonDTO;
+import dtos.PhoneDTO;
 import entities.*;
 import errorhandling.MissingInputException;
 import errorhandling.PersonNotFoundException;
@@ -26,6 +27,7 @@ public class FacadeTest {
     Hobby hobby;
     Hobby hobby2;
     CityInfo cityInfo;
+    Phone phonetest;
 
     public FacadeTest() {
     }
@@ -53,6 +55,7 @@ public class FacadeTest {
         person3 = new Person("test@test.dk","Viggo","Hansen");
         Phone phone1 = new Phone("2314121","DK");
         Phone phone2 = new Phone("9314121","DK");
+        phonetest = new Phone("999999","DK");
         hobby = new Hobby("BasketBall","play ball");
         hobby2 = new Hobby("Tennis","play ball");
         Address address = new Address("Ulrikkenborg Alle","33");
@@ -158,9 +161,7 @@ public class FacadeTest {
         System.out.println("edit person test");
         PersonDTO personDTO = new PersonDTO(person);
         personDTO.setfName("Edited name");
-
         facade.editPerson(personDTO);
-
         assertEquals("Edited name",facade.getPersonByPhone("2314121").getfName());
 
     }
@@ -170,11 +171,16 @@ public class FacadeTest {
         System.out.println("edit person address test");
         person.addAddress(address3);
         PersonDTO personDTO = new PersonDTO(person);
-
         facade.editPersonAddress(person.getId(),new AddressDTO(address3));
-
         assertEquals("Vægterparken",facade.getPersonById(person.getId()).getAddress().getStreet());
+    }
 
+    @Test
+    public void addNewPhoneToPersonTest(){
+        System.out.println("add phone to person test");
+        person.addPhone(phonetest);
+        facade.addNewPhoneToPerson(person.getId(), new PhoneDTO(phonetest));
+        assertEquals(2,facade.getPersonById(person.getId()).getPhones().size());
     }
 
 
