@@ -2,7 +2,7 @@ POST http://localhost:8080/devops_starter_war_exploded/api/person
 Content-Type: application/json
 
 {
-  "fName": "johan",
+  "fName": "Karl",
   "lName": "Petersen",
   "email": "test@test.dk",
   "hobbies": [
@@ -17,10 +17,10 @@ Content-Type: application/json
     }
   ],
   "address": {
-    "street": "Kastrup vej",
-    "info": "45",
+    "street": "kaster vej",
+    "info": "236",
     "cityInfo": {
-      "id": 2
+      "id": 1
     }
   }
 }
@@ -41,13 +41,13 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:8080/ca1_war_exploded/api/person/editaddress/3
+PUT http://localhost:8080/devops_starter_war_exploded/api/person/editaddress/1
 Content-Type: application/json
 
 {
   "address": {
     "street": "kaster vej",
-    "info": "235",
+    "info": "236",
     "cityInfo": {
       "id": 1
     }
