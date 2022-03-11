@@ -5,6 +5,7 @@ import entities.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PhoneDTO {
     private int id;
@@ -55,6 +56,19 @@ public class PhoneDTO {
 
     public void setPerson(int id) {
         this.personId = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PhoneDTO phoneDTO = (PhoneDTO) o;
+        return id == phoneDTO.id && personId == phoneDTO.personId && Objects.equals(nr, phoneDTO.nr) && Objects.equals(desc, phoneDTO.desc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nr, desc, personId);
     }
 }
 

@@ -41,6 +41,7 @@ public class PersonResource {
         PersonDTO personDTO = FACADE.getPersonByPhone(phone);
         return Response.ok().entity(GSON.toJson(personDTO)).build();
     }
+
     @GET
     @Path("/zip/{zip}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -48,6 +49,7 @@ public class PersonResource {
         List<PersonDTO> personDTOList = FACADE.getAllPersonsByZip(zip);
         return Response.ok().entity(GSON.toJson(personDTOList)).build();
     }
+
     @GET
     @Path("/hobby/{hobbyID}")
     @Produces({MediaType.APPLICATION_JSON})

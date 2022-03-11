@@ -5,10 +5,7 @@ import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PersonDTO {
     private int id;
@@ -95,4 +92,16 @@ public class PersonDTO {
         this.address = address;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return id == personDTO.id && Objects.equals(fName, personDTO.fName) && Objects.equals(lName, personDTO.lName) && Objects.equals(email, personDTO.email) && Objects.equals(hobbies, personDTO.hobbies) && Objects.equals(phones, personDTO.phones) && Objects.equals(address, personDTO.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fName, lName, email, hobbies, phones, address);
+    }
 }

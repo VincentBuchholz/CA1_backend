@@ -3,10 +3,7 @@ package dtos;
 import entities.Hobby;
 import entities.Person;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class HobbyDTO {
     private int id;
@@ -50,4 +47,16 @@ public class HobbyDTO {
         this.desc = desc;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HobbyDTO hobbyDTO = (HobbyDTO) o;
+        return id == hobbyDTO.id && Objects.equals(name, hobbyDTO.name) && Objects.equals(desc, hobbyDTO.desc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, desc);
+    }
 }

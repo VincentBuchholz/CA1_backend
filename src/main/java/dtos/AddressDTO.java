@@ -4,10 +4,7 @@ import entities.Address;
 import entities.CityInfo;
 import entities.Person;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class AddressDTO {
     private int id;
@@ -58,5 +55,18 @@ public class AddressDTO {
 
     public void setCityInfo(CityInfoDTO cityInfo) {
         this.cityInfo = cityInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressDTO that = (AddressDTO) o;
+        return id == that.id && Objects.equals(street, that.street) && Objects.equals(info, that.info) && Objects.equals(cityInfo, that.cityInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, street, info, cityInfo);
     }
 }
