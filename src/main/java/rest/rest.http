@@ -71,3 +71,10 @@ DELETE http://localhost:8080/ca1_war_exploded/api/person/deletephone/2
 
 ###
 PUT http://localhost:8080/devops_starter_war_exploded/api/person/addhobby/5/1
+
+
+###
+PUT http://localhost:8080/ca1_war_exploded/api/person/addhobby/2/1
+
+###
+DELETE http://localhost:8080/ca1_war_exploded/api/person/removehobby/2/2

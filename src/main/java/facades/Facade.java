@@ -301,6 +301,24 @@ public class Facade {
         }
     }
 
+    public PersonDTO removeHobbyFromPerson(int personId, int hobbyId) {
+        EntityManager em = emf.createEntityManager();
+        try{
+            Person person = em.find(Person.class,personId);
+            Hobby hobby = em.find(Hobby.class,hobbyId);
+            person.removeHobby(hobby);
+            PersonDTO updated = new PersonDTO(person);
+            em.getTransaction().begin();
+            em.merge(person);
+            em.merge(hobby);
+            em.getTransaction().commit();
+            return updated;
+        } finally {
+            em.close();
+        }
+
+    }
+
 
 //
 //    public static void main(String[] args) {

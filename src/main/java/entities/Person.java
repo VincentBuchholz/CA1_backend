@@ -106,4 +106,10 @@ public class Person {
     public void removePhone(Phone phone) {
         this.phones.remove(phone);
     }
+    public void removeHobby(Hobby hobby) {
+        this.hobbies.remove(hobby);
+        if(!hobby.getPersons().contains(this)){
+            hobby.getPersons().remove(this);
+        }
+    }
 }

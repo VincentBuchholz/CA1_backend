@@ -210,4 +210,12 @@ public class FacadeTest {
         assertEquals(2,facade.getPersonById(person.getId()).getHobbiesDTOs().size());
     }
 
+    @Test
+    public void removeHobbyFromPersonTest() throws NotFoundException{
+        System.out.println("removes hobby from person test");
+        facade.removeHobbyFromPerson(person.getId(),hobby.getId());
+        assertEquals(0,facade.getPersonById(person.getId()).getHobbiesDTOs().size());
+    }
+
+
 }

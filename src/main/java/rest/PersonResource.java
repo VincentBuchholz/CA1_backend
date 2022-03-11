@@ -123,10 +123,20 @@ public class PersonResource {
     @PUT
     @Path("/addhobby/{personid}/{hobbyid}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response updateAddress(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
+    public Response addHobby(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
         PersonDTO updated = FACADE.addHobbyToPerson(personÍd,hobbyId);
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
+
+    @DELETE
+    @Path("/removehobby/{personid}/{hobbyid}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response removeHobby(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
+        PersonDTO updated = FACADE.removeHobbyFromPerson(personÍd,hobbyId);
+        return Response.ok().entity(GSON.toJson(updated)).build();
+    }
+
+
 
 
 
