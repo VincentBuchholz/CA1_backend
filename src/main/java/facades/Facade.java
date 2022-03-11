@@ -272,6 +272,21 @@ public class Facade {
 
     }
 
+    public void deletePhoneFromPerson(int phoneId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Phone phone = em.find(Phone.class, phoneId);
+            Person person = em.find(Person.class, phone.getPerson().getId());
+            person.removePhone(phone);
+            em.getTransaction().begin();
+            em.remove(phone);
+            em.getTransaction().commit();
+
+        }finally {
+            em.close();
+        }
+    }
+
 
 //
 //    public static void main(String[] args) {

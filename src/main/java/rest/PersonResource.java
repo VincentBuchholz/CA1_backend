@@ -111,4 +111,13 @@ public class PersonResource {
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
 
+    @DELETE
+    @Path("/deletephone/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response deletePhoneFromPerson(@PathParam("id") int id) throws NotFoundException {
+        FACADE.deletePhoneFromPerson(id);
+        return Response.ok().entity("Deleted").build();
+    }
+
 }

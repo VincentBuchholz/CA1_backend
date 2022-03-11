@@ -65,3 +65,6 @@ Content-Type: application/json
 }
 ]
 }
+
+###
+DELETE http://localhost:8080/ca1_war_exploded/api/person/deletephone/2

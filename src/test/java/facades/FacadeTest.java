@@ -28,6 +28,7 @@ public class FacadeTest {
     Hobby hobby2;
     CityInfo cityInfo;
     Phone phonetest;
+    Phone phone1;
 
     public FacadeTest() {
     }
@@ -53,7 +54,7 @@ public class FacadeTest {
         person = new Person("test@test.dk","Karl","Larsen");
         person2 = new Person("test@test.dk","Hans","Larsen");
         person3 = new Person("test@test.dk","Viggo","Hansen");
-        Phone phone1 = new Phone("2314121","DK");
+        phone1 = new Phone("2314121","DK");
         Phone phone2 = new Phone("9314121","DK");
         phonetest = new Phone("999999","DK");
         hobby = new Hobby("BasketBall","play ball");
@@ -69,6 +70,7 @@ public class FacadeTest {
         person3.addHobby(hobby2);
 
         person.addPhone(phone1);
+
         person2.addPhone(phone2);
 
         person.addAddress(address);
@@ -183,6 +185,13 @@ public class FacadeTest {
         assertEquals(2,facade.getPersonById(person.getId()).getPhones().size());
     }
 
-
+    @Test
+    public void deletePhoneFromPersonTest() throws NotFoundException{
+        System.out.println("delete phone from person test");
+        facade.deletePhoneFromPerson(phone1.getId());
+        System.out.println(phone1.getId());
+        System.out.println(person.getPhones());
+        assertEquals(0,facade.getPersonById(person.getId()).getPhones().size());
+    }
 
 }

@@ -103,4 +103,7 @@ public class Person {
             address.addPerson(this);
         }
     }
+    public void removePhone(Phone phone) {
+        this.phones.remove(phone);
+    }
 }
