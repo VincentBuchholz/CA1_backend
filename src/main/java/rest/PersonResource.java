@@ -21,10 +21,10 @@ import java.util.List;
 public class PersonResource {
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-       
+
     private static final Facade FACADE =  Facade.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+
 
     @GET
     @Path("/all")
@@ -125,16 +125,16 @@ public class PersonResource {
     @PUT
     @Path("/addhobby/{personid}/{hobbyid}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response addHobby(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
-        PersonDTO updated = FACADE.addHobbyToPerson(personÍd,hobbyId);
+    public Response addHobby(@PathParam("personid") int personId, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
+        PersonDTO updated = FACADE.addHobbyToPerson(personId,hobbyId);
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
 
     @DELETE
     @Path("/removehobby/{personid}/{hobbyid}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response removeHobby(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
-        PersonDTO updated = FACADE.removeHobbyFromPerson(personÍd,hobbyId);
+    public Response removeHobby(@PathParam("personid") int personId, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
+        PersonDTO updated = FACADE.removeHobbyFromPerson(personId,hobbyId);
         return Response.ok().entity(GSON.toJson(updated)).build();
     }
 

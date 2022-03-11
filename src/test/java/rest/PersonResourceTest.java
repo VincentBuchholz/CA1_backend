@@ -176,7 +176,7 @@ public class PersonResourceTest {
         PersonDTO personDTO =
                 given()
                         .contentType(ContentType.JSON)
-                        .get("/person/phone/{phone}", cityInfo.getZipCode())
+                        .get("/person/phone/{phone}", "9314121" )
                         .then()
                         .assertThat()
                         .statusCode(HttpStatus.OK_200.getStatusCode())
@@ -342,14 +342,14 @@ public class PersonResourceTest {
                 .header("Content-type", "application/json")
                 .and()
                 .body(requestBody)
-                .put("/person/edit/{id}", 10)
+                .put("/person/edit/{id}", 9999)
                 .then()
                 .statusCode(404);
     }
 
     @Test
-    public void testEditAddress(){
-        Address newAddress = new Address("Tests street","none");
+    public void testEditAddress() {
+        Address newAddress = new Address("Tests street", "none");
         newAddress.addCityInfo(cityInfo);
 
         person.addAddress(newAddress);
@@ -364,12 +364,148 @@ public class PersonResourceTest {
                 .when()
                 .put("/person/editaddress/{id}", person.getId())
                 .then()
-                .extract().body().jsonPath().getObject("address",AddressDTO.class);
-        assertThat(response.getStreet(),equalTo(addressDTO.getStreet()));
-        assertThat(response.getInfo(),equalTo(addressDTO.getInfo()));
-        assertThat(response.getCityInfo(),equalTo(addressDTO.getCityInfo()));
-
+                .extract().body().jsonPath().getObject("address", AddressDTO.class);
+        assertThat(response.getStreet(), equalTo(addressDTO.getStreet()));
+        assertThat(response.getInfo(), equalTo(addressDTO.getInfo()));
+        assertThat(response.getCityInfo(), equalTo(addressDTO.getCityInfo()));
     }
 
+    @Test
+    public void testEditAddressPersonNotFound() {
+        Address newAddress = new Address("Tests street", "none");
+        newAddress.addCityInfo(cityInfo);
+        person.addAddress(newAddress);
+        PersonDTO personDTO = new PersonDTO(person);
+        String requestBody = GSON.toJson(personDTO);
+        given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .put("/person/editaddress/{id}", 9999)
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testAddPhoneToPerson() {
+        Phone phone = new Phone("9999999", "eng");
+        person.addPhone(phone);
+
+        PersonDTO personDTO = new PersonDTO(person);
+        String requestBody = GSON.toJson(personDTO);
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/person/addphone/{id}", person.getId())
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .body("phones", hasItems(hasEntry("nr", "9999999")))
+                .body("phones", hasItems(hasEntry("nr", "2314121")));
+    }
+
+    @Test
+    public void testAddPhoneToPersonNotFound() {
+        Phone phone = new Phone("9999999", "eng");
+        person.addPhone(phone);
+
+        PersonDTO personDTO = new PersonDTO(person);
+        String requestBody = GSON.toJson(personDTO);
+        given()
+                .header("Content-type", ContentType.JSON)
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/person/addphone/{id}", 9999)
+                .then()
+                .assertThat()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testDeletePhoneFromPerson() {
+        given()
+                .contentType(ContentType.JSON)
+                .delete("/person/deletephone/{id}", phone1.getId())
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testDeletePhoneFromPersonNotFound() {
+        given()
+                .contentType(ContentType.JSON)
+                .delete("/person/deletephone/{id}", 9999)
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testAddHobbyToPerson() {
+        given()
+                .header("Content-type", "application/json")
+                .pathParam("personid", person.getId())
+                .pathParam("hobbyid", hobby2.getId())
+                .put("/person/addhobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testAddHobbyToPersonPersonNotFound() {
+        given()
+                .header("Content-type", "application/json")
+                .pathParam("personid", 9999)
+                .pathParam("hobbyid", hobby2.getId())
+                .put("/person/addhobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testAddHobbyToPersonHobbyNotFound() {
+        given()
+                .header("Content-type", "application/json")
+                .pathParam("personid", person.getId())
+                .pathParam("hobbyid", 9999)
+                .put("/person/addhobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testRemoveHobbyFromPerson() {
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("personid", person.getId())
+                .pathParam("hobbyid", hobby.getId())
+                .delete("/person/removehobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testRemoveHobbyFromPersonPersonNotFound() {
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("personid", 9999)
+                .pathParam("hobbyid", hobby.getId())
+                .delete("/person/removehobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testRemoveHobbyFromPersonHobbyNotFound() {
+        given()
+                .contentType(ContentType.JSON)
+                .pathParam("personid", person.getId())
+                .pathParam("hobbyid", 9999)
+                .delete("/person/removehobby/{personid}/{hobbyid}")
+                .then()
+                .statusCode(404);
+    }
 
 }
