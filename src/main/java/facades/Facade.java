@@ -191,10 +191,13 @@ public class Facade {
         }
     }
 
-    public PersonDTO editPersonAddress(int userId, AddressDTO addressDTO) {
+    public PersonDTO editPersonAddress(int userId, AddressDTO addressDTO) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,userId);
+            if(person == null){
+                throw new NotFoundException("Person with provided id not found");
+            }
 
             Address oldAddress = em.find(Address.class,person.getAddress().getId());
             Address newAddress = new Address(addressDTO.getStreet(), addressDTO.getInfo());
@@ -254,10 +257,13 @@ public class Facade {
 
     }
 
-    public PersonDTO addNewPhoneToPerson(int userId, PhoneDTO phoneDTO) {
+    public PersonDTO addNewPhoneToPerson(int userId, PhoneDTO phoneDTO) throws NotFoundException {
         Phone phone = new Phone(phoneDTO.getNr(), phoneDTO.getDesc());
         EntityManager em = getEntityManager();
         Person person = em.find(Person.class,userId);
+        if(person == null){
+            throw new NotFoundException("Person with provided id not found");
+        }
         person.addPhone(phone);
         try {
             em.getTransaction().begin();
@@ -270,10 +276,13 @@ public class Facade {
 
     }
 
-    public void deletePhoneFromPerson(int phoneId) {
+    public void deletePhoneFromPerson(int phoneId) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try {
             Phone phone = em.find(Phone.class, phoneId);
+            if(phone == null){
+                throw new NotFoundException("Phone with provided id not found");
+            }
             Person person = em.find(Person.class, phone.getPerson().getId());
             person.removePhone(phone);
             em.getTransaction().begin();
@@ -285,11 +294,17 @@ public class Facade {
         }
     }
 
-    public PersonDTO addHobbyToPerson(int personId, int hobbyId) {
+    public PersonDTO addHobbyToPerson(int personId, int hobbyId) throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,personId);
+            if(person == null){
+                throw new NotFoundException("Person with provided id not found");
+            }
             Hobby hobby = em.find(Hobby.class,hobbyId);
+            if(hobby == null){
+                throw new NotFoundException("Hobby with provided id not found");
+            }
             person.addHobby(hobby);
             PersonDTO updated = new PersonDTO(person);
             em.getTransaction().begin();
@@ -301,11 +316,17 @@ public class Facade {
         }
     }
 
-    public PersonDTO removeHobbyFromPerson(int personId, int hobbyId) {
+    public PersonDTO removeHobbyFromPerson(int personId, int hobbyId)throws NotFoundException {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,personId);
+            if(person == null){
+                throw new NotFoundException("Person with provided id not found");
+            }
             Hobby hobby = em.find(Hobby.class,hobbyId);
+            if(hobby == null){
+                throw new NotFoundException("Hobby with provided id not found");
+            }
             person.removeHobby(hobby);
             PersonDTO updated = new PersonDTO(person);
             em.getTransaction().begin();
@@ -318,13 +339,5 @@ public class Facade {
         }
 
     }
-
-
-//
-//    public static void main(String[] args) {
-//        emf = EMF_Creator.createEntityManagerFactory();
-//        FacadeExample fe = getFacadeExample(emf);
-//        fe.getAll().forEach(dto->System.out.println(dto));
-//    }
 
 }

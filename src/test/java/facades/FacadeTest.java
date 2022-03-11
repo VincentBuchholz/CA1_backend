@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class FacadeTest {
 
     private static EntityManagerFactory emf;
@@ -50,6 +50,14 @@ public class FacadeTest {
     public void setUp() {
 
         EntityManager em = emf.createEntityManager();
+
+        em.getTransaction().begin();
+        em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Address.deleteAllRows").executeUpdate();
+        em.createNamedQuery("CityInfo.deleteAllRows").executeUpdate();
+        em.createNamedQuery("Hobby.deleteAllRows").executeUpdate();
+        em.getTransaction().commit();
 
 
         person = new Person("test@test.dk","Karl","Larsen");
@@ -104,15 +112,7 @@ public class FacadeTest {
 
     @AfterEach
     public void tearDown() {
-        System.out.println("hello from after each");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.createNamedQuery("Address.deleteAllRows");
-        em.createNamedQuery("Hobby.deleteAllRows");
-        em.createNamedQuery("CityInfo.deleteAllRows");
-        em.createNamedQuery("Phone.deleteAllRows");
-        em.createNamedQuery("Person.deleteAllRows");
-        em.getTransaction().commit();
+//        EntityManager em = emf.createEntityManager();
     }
 
 
