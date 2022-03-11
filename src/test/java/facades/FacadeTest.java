@@ -202,4 +202,12 @@ public class FacadeTest {
         assertEquals(0,facade.getPersonById(person.getId()).getPhones().size());
     }
 
+    @Test
+    public void addHobbyTest()throws NotFoundException {
+        System.out.println("add hobby to person test");
+        facade.addHobbyToPerson(person.getId(),hobby2.getId());
+
+        assertEquals(2,facade.getPersonById(person.getId()).getHobbiesDTOs().size());
+    }
+
 }

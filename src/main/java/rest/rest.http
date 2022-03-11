@@ -68,3 +68,6 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:8080/ca1_war_exploded/api/person/deletephone/2
+
+###
+PUT http://localhost:8080/devops_starter_war_exploded/api/person/addhobby/5/1

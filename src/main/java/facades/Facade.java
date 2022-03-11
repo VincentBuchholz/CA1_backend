@@ -285,6 +285,22 @@ public class Facade {
         }
     }
 
+    public PersonDTO addHobbyToPerson(int personId, int hobbyId) {
+        EntityManager em = emf.createEntityManager();
+        try{
+            Person person = em.find(Person.class,personId);
+            Hobby hobby = em.find(Hobby.class,hobbyId);
+            person.addHobby(hobby);
+            PersonDTO updated = new PersonDTO(person);
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+            return updated;
+        } finally {
+            em.close();
+        }
+    }
+
 
 //
 //    public static void main(String[] args) {

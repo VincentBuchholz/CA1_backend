@@ -120,4 +120,14 @@ public class PersonResource {
         return Response.ok().entity("Deleted").build();
     }
 
+    @PUT
+    @Path("/addhobby/{personid}/{hobbyid}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response updateAddress(@PathParam("personid") int personÍd, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
+        PersonDTO updated = FACADE.addHobbyToPerson(personÍd,hobbyId);
+        return Response.ok().entity(GSON.toJson(updated)).build();
+    }
+
+
+
 }
