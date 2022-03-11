@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AddressDTO;
 import dtos.CityInfoDTO;
 import dtos.PersonDTO;
 import entities.*;
@@ -285,6 +286,7 @@ public class PersonResourceTest {
                 .body("hobbies", hasItems(hasEntry("id", hobby2.getId())))
                 .body("phones", hasItems(hasEntry("nr", "24341421")));
     }
+
     @Test
     public void testCreatePersonMissingInput() {
         Person person = new Person("Test@test.dk", null, "testl");
@@ -307,5 +309,67 @@ public class PersonResourceTest {
                 .assertThat()
                 .statusCode(400);
     }
+
+    @Test
+    public void testEditPerson() {
+        PersonDTO personDTO = new PersonDTO(person);
+        personDTO.setfName("EditedF");
+        personDTO.setlName("EditedL");
+        personDTO.setEmail("Edited@mail.dk");
+        String requestBody = GSON.toJson(personDTO);
+        given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .put("/person/edit/{id}", person.getId())
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(person.getId()))
+                .body("fName", equalTo("EditedF"))
+                .body("lName", equalTo("EditedL"))
+                .body("email", equalTo("Edited@mail.dk"));
+    }
+
+    @Test
+    public void testEditPersonNotFound() {
+        PersonDTO personDTO = new PersonDTO(person);
+        personDTO.setfName("EditedF");
+        personDTO.setlName("EditedL");
+        personDTO.setEmail("Edited@mail.dk");
+        String requestBody = GSON.toJson(personDTO);
+        given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .put("/person/edit/{id}", 10)
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testEditAddress(){
+        Address newAddress = new Address("Tests street","none");
+        newAddress.addCityInfo(cityInfo);
+
+        person.addAddress(newAddress);
+        PersonDTO personDTO = new PersonDTO(person);
+        AddressDTO addressDTO = new AddressDTO(newAddress);
+
+        String requestBody = GSON.toJson(personDTO);
+        AddressDTO response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .put("/person/editaddress/{id}", person.getId())
+                .then()
+                .extract().body().jsonPath().getObject("address",AddressDTO.class);
+        assertThat(response.getStreet(),equalTo(addressDTO.getStreet()));
+        assertThat(response.getInfo(),equalTo(addressDTO.getInfo()));
+        assertThat(response.getCityInfo(),equalTo(addressDTO.getCityInfo()));
+
+    }
+
 
 }
