@@ -51,6 +51,7 @@ public class FacadeTest {
 
         EntityManager em = emf.createEntityManager();
 
+
         person = new Person("test@test.dk","Karl","Larsen");
         person2 = new Person("test@test.dk","Hans","Larsen");
         person3 = new Person("test@test.dk","Viggo","Hansen");
@@ -103,6 +104,15 @@ public class FacadeTest {
 
     @AfterEach
     public void tearDown() {
+        System.out.println("hello from after each");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        em.createNamedQuery("Address.deleteAllRows");
+        em.createNamedQuery("Hobby.deleteAllRows");
+        em.createNamedQuery("CityInfo.deleteAllRows");
+        em.createNamedQuery("Phone.deleteAllRows");
+        em.createNamedQuery("Person.deleteAllRows");
+        em.getTransaction().commit();
     }
 
 
@@ -189,8 +199,6 @@ public class FacadeTest {
     public void deletePhoneFromPersonTest() throws NotFoundException{
         System.out.println("delete phone from person test");
         facade.deletePhoneFromPerson(phone1.getId());
-        System.out.println(phone1.getId());
-        System.out.println(person.getPhones());
         assertEquals(0,facade.getPersonById(person.getId()).getPhones().size());
     }
 

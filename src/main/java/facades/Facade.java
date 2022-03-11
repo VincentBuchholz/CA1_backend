@@ -123,7 +123,6 @@ public class Facade {
         }
         Address address = new Address(personDTO.getAddress().getStreet(),personDTO.getAddress().getInfo());
         address = checkIfAddressExists(address,personDTO.getAddress().getCityInfo().getId());
-        System.out.println("hej: " + address);
         person.addAddress(address);
 
 
@@ -159,7 +158,6 @@ public class Facade {
         EntityManager em = emf.createEntityManager();
         try{
             Person person = em.find(Person.class,personDTO.getId());
-            System.out.println(person);
             if(person == null){
                 throw new NotFoundException("Person with provided id not found");
             }
