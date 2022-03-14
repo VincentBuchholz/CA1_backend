@@ -28,6 +28,7 @@ public class ApplicationConfig extends Application {
         resources.add(PersonResource.class);
         resources.add(NotFoundMapper.class);
         resources.add(MissingInputMapper.class);
+        resources.add(CorsFilter.class);
     }
     
 }
