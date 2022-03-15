@@ -217,5 +217,11 @@ public class FacadeTest {
         assertEquals(0,facade.getPersonById(person.getId()).getHobbiesDTOs().size());
     }
 
+    @Test
+    public void getAllHobbiesTest(){
+        System.out.println("Get all hobbies test");
+        assertEquals(2, facade.getAllHobbies().size());
+    }
+
 
 }

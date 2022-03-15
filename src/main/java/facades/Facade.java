@@ -340,4 +340,14 @@ public class Facade {
 
     }
 
+    public List<HobbyDTO> getAllHobbies(){
+        EntityManager em = emf.createEntityManager();
+        try{
+            TypedQuery<HobbyDTO> query = em.createQuery("select new dtos.HobbyDTO(h) FROM Hobby h",HobbyDTO.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
 }

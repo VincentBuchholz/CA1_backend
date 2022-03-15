@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.AddressDTO;
 import dtos.CityInfoDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import entities.*;
 import io.restassured.http.ContentType;
@@ -506,6 +507,22 @@ public class PersonResourceTest {
                 .delete("/person/removehobby/{personid}/{hobbyid}")
                 .then()
                 .statusCode(404);
+    }
+
+    @Test
+    public void testGetAllHobbies() {
+        List<HobbyDTO> hobbyDTOS;
+        hobbyDTOS = given()
+                .contentType("application/json")
+                .when()
+                .get("/person/hobby/all")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK_200.getStatusCode())
+                .extract().body().jsonPath().getList("", HobbyDTO.class);
+        HobbyDTO h1DTO = new HobbyDTO(hobby);
+        HobbyDTO h2DTO = new HobbyDTO(hobby2);
+        assertThat(hobbyDTOS, containsInAnyOrder(h1DTO, h2DTO));
     }
 
 }

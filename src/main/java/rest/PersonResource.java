@@ -3,6 +3,7 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.CityInfoDTO;
+import dtos.HobbyDTO;
 import dtos.PersonDTO;
 import dtos.PhoneDTO;
 import entities.Phone;
@@ -136,6 +137,14 @@ public class PersonResource {
     public Response removeHobby(@PathParam("personid") int personId, @PathParam("hobbyid") int hobbyId) throws NotFoundException {
         PersonDTO updated = FACADE.removeHobbyFromPerson(personId,hobbyId);
         return Response.ok().entity(GSON.toJson(updated)).build();
+    }
+
+    @GET
+    @Path("/hobby/all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllHobbies() {
+        List<HobbyDTO> hobbyDTOS = FACADE.getAllHobbies();
+        return Response.ok().entity(GSON.toJson(hobbyDTOS)).build();
     }
 
 
