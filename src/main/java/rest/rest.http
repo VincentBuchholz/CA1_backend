@@ -30,12 +30,12 @@ GET http://localhost:8080/devops_starter_war_exploded/api/person/all
 
 ###
 
-PUT http://localhost:8080/devops_starter_war_exploded/api/person/edit/10
+PUT https://vincehub.dk/tomcat/ca1/api/person/edit/2
 Content-Type: application/json
 
 {
-  "fName": "Johannes",
-  "lName": "Test",
+  "fName": "Viktor",
+  "lName": "Bak",
   "email": "test@test.dk"
   }
 
@@ -54,13 +54,13 @@ Content-Type: application/json
   }
 }
 ###
-POST http://localhost:8080/ca1_war_exploded/api/person/addphone/1
+POST https://vincehub.dk/tomcat/ca1/api/person/addphone/4
 Content-Type: application/json
 
 {
 "phones": [
 {
-"nr": "7364646",
+"nr": "10399173",
 "desc": "DKk"
 }
 ]

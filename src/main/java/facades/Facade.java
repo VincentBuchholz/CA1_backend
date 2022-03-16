@@ -167,6 +167,9 @@ public class Facade {
             if(personDTO.getlName() != null) {
                 person.setLastName(personDTO.getlName());
             }
+            if(personDTO.getEmail() != null) {
+                person.setEmail(personDTO.getEmail());
+            }
 
             em.getTransaction().begin();
             em.merge(person);
