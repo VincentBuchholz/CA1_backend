@@ -95,7 +95,7 @@ public class Facade {
             Hobby hobby = query.getSingleResult();
             return hobby.getPersons().size();
         } catch (Exception e){
-            throw new NotFoundException("Hobby with provieded id not found");
+            throw new NotFoundException("Hobby with provided id not found");
         }
         } finally {
             em.close();
